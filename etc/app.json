@@ -1,0 +1,47 @@
+{
+  "kind": "app",
+  "name": "messagebox",
+  "version": "0.1.0",
+  "programs": {
+    "messagebox": "bin/messagebox.wasm"
+  },
+  "config": {
+    "messagebox": {
+      "index": "onboard/index"
+    }
+  },
+  "provides": [],
+  "requires": [],
+  "filters": {
+    "hosted": "messagebox.hosted",
+    "list": "messagebox.list"
+  },
+  "routes": [
+    {
+      "transport": "http",
+      "address": "/sendMessage",
+      "filters": [
+        "kernel.brc104",
+        "hosted"
+      ],
+      "handler": "messagebox.send"
+    },
+    {
+      "transport": "http",
+      "address": "/acknowledgeMessage",
+      "filters": [
+        "kernel.brc104"
+      ],
+      "handler": "messagebox.acknowledge"
+    },
+    {
+      "transport": "http",
+      "address": "/listMessages",
+      "filters": [
+        "kernel.brc104",
+        "list"
+      ]
+    }
+  ],
+  "description": "The hosted BRC-33 messagebox: one skein keeps a mailbox for every key it hosts (the keys of config.messagebox.index's record, onboard/index in a host skein). POST /messagebox/sendMessage (kernel.brc104, then the filter hosted: the recipient a hosted key, else 403 ERR_ACCOUNT_REQUIRED, nothing logged) stores the message and adds it to {recipient, box}'s list in the request's step; POST /messagebox/acknowledgeMessage (kernel.brc104) removes ids from the caller's own lists in its step; POST /messagebox/listMessages (kernel.brc104, then the filter list) is a read: the caller's box, nothing logged. JSON (BRC-33) or dag-cbor (BRC-231, application/cbor)."
+}
