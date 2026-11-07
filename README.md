@@ -68,5 +68,5 @@ zig build bin    bin/messagebox.wasm (committed; reproducible)
 ## Install
 
 In a skein whose genesis no longer carries the stock messagebox routes under
-`/messagebox/` (skein ≥ 0.3.0); the host image installs it beside onboard
+`/messagebox/` (skein ≥ 0.4.1); the host image installs it beside onboard
 (`images/host/etc/apps.json`).
